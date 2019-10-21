@@ -19,7 +19,7 @@ function App(props) {
       await Auth.currentSession();
       userHasAuthenticated(true);
     } catch (e) {
-      if (e != "No current user") {
+      if (e !== "No current user") {
         alert(e);
       }
     }
@@ -29,37 +29,43 @@ function App(props) {
   async function handleLogout() {
     await Auth.signOut();
     userHasAuthenticated(false);
-    props.history.push("/login")
+    props.history.push("/login");
   }
   return (
-    !isAuthenticating &&
-    <div className="App container">
-      <Navbar fluid collapseOnSelect>
-        <Navbar.Header>
-          <Navbar.Brand>
-            <Link to="/">Scratch</Link>
-          </Navbar.Brand>
-          <Navbar.Toggle />
-        </Navbar.Header>
-        <Navbar.Collapse>
-          <Nav pullRight>
-            {isAuthenticated ? (
-              <NavItem onClick={handleLogout}>Logout</NavItem>
-            ) : (
-              <>
-                <LinkContainer to="/signup">
-                  <NavItem>Signup</NavItem>
-                </LinkContainer>
-                <LinkContainer to="/login">
-                  <NavItem>Login</NavItem>
-                </LinkContainer>
-              </>
-            )}
-          </Nav>
-        </Navbar.Collapse>
-      </Navbar>
-      <Routes appProps={{ isAuthenticated, userHasAuthenticated }} />
-    </div>
+    !isAuthenticating && (
+      <div className="App container">
+        <Navbar fluid collapseOnSelect>
+          <Navbar.Header>
+            <Navbar.Brand>
+              <Link to="/">Scratch</Link>
+            </Navbar.Brand>
+            <Navbar.Toggle />
+          </Navbar.Header>
+          <Navbar.Collapse>
+            <Nav pullRight>
+              {isAuthenticated ? (
+                <>
+                  <LinkContainer to="/settings">
+                    <NavItem>Settings</NavItem>
+                  </LinkContainer>
+                  <NavItem onClick={handleLogout}>Logout</NavItem>
+                </>
+              ) : (
+                <>
+                  <LinkContainer to="/signup">
+                    <NavItem>Signup</NavItem>
+                  </LinkContainer>
+                  <LinkContainer to="/login">
+                    <NavItem>Login</NavItem>
+                  </LinkContainer>
+                </>
+              )}
+            </Nav>
+          </Navbar.Collapse>
+        </Navbar>
+        <Routes appProps={{ isAuthenticated, userHasAuthenticated }} />
+      </div>
+    )
   );
 }
 
